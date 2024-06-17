@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Call Stack Visualization</title>
+  <style>
+    #canvas {
+      border: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas" width="800" height="600"></canvas>
+  <script>
+    class Node {
+      constructor(key) {
+        this.key = key;
+        this.left = null;
+        this.right = null;
+      }
+    }
+
+    class BinaryTree {
+      constructor() {
+        this.root = null;
+      }
+
+      insert(key) {
+        if (this.root === null) {
+          this.root = new Node(key);
+        } else {
+          this._insertRecursively(this.root, key);
+        }
+      }
+
+      _insertRecursively(node, key) {
+        if (key < node.key) {
+          if (node.left === null) {
+            node.left = new Node(key);
+          } else {
+            this._insertRecursively(node.left, key);
+          }
+        } else {
+          if (node.right === null) {
+            node.right = new Node(key);
+          } else {
+            this._insertRecursively(node.right, key);
+          }
+        }
+      }
+    }
+
+    const tree = new BinaryTree();
+    tree.insert(50);
+    tree.insert(11);
+    tree.insert(30);
+    tree.insert(43);
+    tree.insert(24);
+    tree.insert(78);
+    tree.insert(77);
+    tree.insert(79);
+    tree.insert(80);
+    tree.insert(91);
+
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const stack = [];
+    let step = 0;
+
+    const recursiveDepthFirstTraversal = (root, depth = 0, position = 0) => {
+      stack.push({ step: step++, depth, position, action: `Call ${root ? root.key : 'null'}` });
+      if (root === null) {
+        stack.push({ step: step++, depth, position, action: 'Return []' });
+        return [];
+      }
+
+      const leftValues = recursiveDepthFirstTraversal(root.left, depth + 1, position - 1);
+      const rightValues = recursiveDepthFirstTraversal(root.right, depth + 1, position + 1);
+
+      stack.push({ step: step++, depth, position, action: `Return [${root.key}, ...]` });
+      return [root.key, ...leftValues, ...rightValues];
+    };
+
+    recursiveDepthFirstTraversal(tree.root);
+    console.log(stack);
+
+    let currentStep = 0;
+    const interval = setInterval(() => {
+      if (currentStep >= stack.length) {
+        clearInterval(interval);
+        return;
+      }
+
+      const { depth, position, action } = stack[currentStep];
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i <= currentStep; i++) {
+        const { depth: d, position: p, action: a } = stack[i];
+        ctx.fillText(a, canvas.width / 2 + p * 60, 50 + d * 40);
+      }
+      currentStep++;
+    }, 1000);
+  </script>
+</body>
+</html>
