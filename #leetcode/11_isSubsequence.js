@@ -17,6 +17,6 @@ var isSubsequence = function (s, t) {
 };
 
 let s = "";
-let t = "ahbgdc";
+let t = "ahbgdc"
 
 console.log(isSubsequence(s, t));

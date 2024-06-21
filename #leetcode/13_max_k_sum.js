@@ -21,6 +21,6 @@ var maxOperations = function(nums, k) {
 
 
 let nums = [1,2,3,4]
-let  k = 5
+let  k = 5;
 
 console.log(maxOperations(nums,k));

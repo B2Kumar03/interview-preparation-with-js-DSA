@@ -12,7 +12,7 @@ var moveZeroes = function(nums) {
     }
     for(let i=left;i<nums.length;i++){
         nums[i]=0
-        }
+        };
     return nums
 };
 

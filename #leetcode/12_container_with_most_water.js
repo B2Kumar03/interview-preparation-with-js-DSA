@@ -14,7 +14,7 @@ var maxArea = function(height) {
         }
     }
     console.log(left,right);
-    return area
+    return area;
 };
 
 console.log(maxArea(height));

@@ -15,7 +15,7 @@ var findMaxAverage = function (nums, k) {
     i++;
     j++;
   }
-  return max / k;
+  return max / k
 };
 
 let nums = [1, 12, -5, -6, 50, 3];
